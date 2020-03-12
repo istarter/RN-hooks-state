@@ -1,44 +1,46 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import ColorCounter from '../components/ColorCounter';
 
 const COLOR_INCREMENT = 15;
 
+// first argument (state) object, red,green,blue.
+// second argument (how should we change state object) that describe the update like increasing decreasing red,blue,green.
+// state === {red: number, green: number, blue: number};
+// action === {colorToChange: 'red' || 'green' || 'blue', amount: 15 || -15 }
+const reducer = (state, action) => {
+    switch (action.colorToChange) {
+        case 'red':
+            //   return { red: 0, green: 0, blue: 0, state.red + action.amount };
+            return { ...state, red: state.red + action.amount };
+        case 'green':
+            return { ...state, green: state.green + action.amount };
+        case 'blue':
+            return { ...state, blue: state.blue + action.amount };
+        default:
+            return state;
+    }
+};
 const SquareScreen = () => {
-    const [red, setRed] = useState(0);
-    const [green, setGreen] = useState(0);
-    const [blue, setBlue] = useState(0);
 
-    const setColor = (color, change) => {
-        // color === 'red', 'green', 'blue'
-        // change === +15, -15 
 
-        if (color === 'red') {
-            if (red + change > 255 || red + change < 0) {
-                return;
-            }
-            else {
-                setRed(red + change);
-            }
-        }
-
-    };
+    const [state, dispatch] = useReducer(reducer, { red: 0, green: 0, blue: 0 });
 
     return (
         <View>
             <ColorCounter
-                onIncrease={() => setColor('red', COLOR_INCREMENT)}
-                onDecrease={() => setColor('red', -1 * COLOR_INCREMENT)}
+                onIncrease={() => }
+                onDecrease={() => }
                 color="Red" />
             <ColorCounter
-                onIncrease={() => setBlue(blue + COLOR_INCREMENT)}
-                onDecrease={() => setBlue(blue - COLOR_INCREMENT)}
+                onIncrease={() => }
+                onDecrease={() => }
                 color="Blue"
             />
             <ColorCounter
                 color="Green"
-                onIncrease={() => setGreen(green + COLOR_INCREMENT)}
-                onDecrease={() => setGreen(green - COLOR_INCREMENT)}
+                onIncrease={() => }
+                onDecrease={() => }
             />
             <View style={{
                 height: 150,
@@ -47,6 +49,8 @@ const SquareScreen = () => {
             }} />
 
         </View>
+
+
     );
 };
 
